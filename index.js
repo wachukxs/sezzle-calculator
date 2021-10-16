@@ -35,6 +35,11 @@ class Calculator {
          * As soon as we create the calculator, we should call the this.clear function because we have to reset the inputs
          * 
          * WHY?
+         * 
+         * 
+         * [-|\+]*\d+\*\d+
+         * 
+         * we should also allow for -3 * -3 : TODO later
          */
         this.clear()
     }
@@ -132,19 +137,57 @@ class Calculator {
         // split subtraction first.
         // let _computation;
 
-        if (this.currentOperand) {
-            console.log(`tryna solve ${this.currentOperand}`);
-            if (Array.isArray(this.currentOperand.toString().split('÷'))) {
-                this.currentOperand = this.divideNumbers(this.currentOperand.toString().split('÷').map((v) => this.someRecursiveMethod(v)))
-            } else if (Array.isArray(this.currentOperand.toString().split('*'))) {
-                this.currentOperand = this.multiplyNumbers(this.currentOperand.toString().split('*').map((v) => this.someRecursiveMethod(v)))
-            } else if (Array.isArray(this.currentOperand.toString().split('+'))) {
-                this.currentOperand = this.addNumbers(this.currentOperand.toString().split('+').map((v) => this.someRecursiveMethod(v)))
-            } else if (Array.isArray(this.currentOperand.toString().split('-'))) {
-                this.currentOperand = this.subtractNumbers(this.currentOperand.toString().split('-').map((v) => this.someRecursiveMethod(v)))
-            }
-        } else {
+        // if (this.currentOperand) {
+        //     console.log(`tryna solve ${this.currentOperand}`);
+        //     if (Array.isArray(this.currentOperand.toString().split('÷'))) {
+        //         this.currentOperand = this.divideNumbers(this.currentOperand.toString().split('÷').map((v) => this.someRecursiveMethod(v)))
+        //     } else if (Array.isArray(this.currentOperand.toString().split('*'))) {
+        //         this.currentOperand = this.multiplyNumbers(this.currentOperand.toString().split('*').map((v) => this.someRecursiveMethod(v)))
+        //     } else if (Array.isArray(this.currentOperand.toString().split('+'))) {
+        //         this.currentOperand = this.addNumbers(this.currentOperand.toString().split('+').map((v) => this.someRecursiveMethod(v)))
+        //     } else if (Array.isArray(this.currentOperand.toString().split('-'))) {
+        //         this.currentOperand = this.subtractNumbers(this.currentOperand.toString().split('-').map((v) => this.someRecursiveMethod(v)))
+        //     }
+        // } else {
             
+        // }
+
+        // let _computation;
+        // _computation = this.currentOperand.match(/\d+÷\d+/g)
+        if (this.currentOperand.match(/\d+÷\d+/g)) {
+            let _we = this.currentOperand.match(/\d+÷\d+/g).map((v) => this.someRecursiveMethod(v))
+            console.log('_we for ÷', _we);
+            this.currentOperand.match(/\d+÷\d+/g).forEach((v, i) => {
+                this.currentOperand = this.currentOperand.replace(v, _we[i])
+            })
+            this.compute()
+        } else if (this.currentOperand.match(/\d+\*\d+/g)) {
+            console.log(this.currentOperand,'******', this.currentOperand.match(/\d+\*\d+/g));
+            let _we = this.currentOperand.match(/\d+\*\d+/g).map((v) => this.someRecursiveMethod(v))
+            console.log('_we for *', _we);
+            this.currentOperand.match(/\d+\*\d+/g).forEach((v, i) => {
+                this.currentOperand = this.currentOperand.replace(v, _we[i])
+            })
+
+            console.log('after ***', this.currentOperand);
+            this.compute()
+        } else if (this.currentOperand.match(/\d+\+\d+/g)) {
+            console.log('');
+            let _we = this.currentOperand.match(/\d+\+\d+/g).map((v) => this.someRecursiveMethod(v))
+            console.log('_we for +', _we);
+            this.currentOperand.match(/\d+\+\d+/g).forEach((v, i) => {
+                this.currentOperand = this.currentOperand.replace(v, _we[i])
+            })
+            this.compute()
+        } else if (this.currentOperand.match(/\d+-\d+/g)) {
+            let _we = this.currentOperand.match(/\d+-\d+/g).map((v) => this.someRecursiveMethod(v))
+            console.log('_we for -', _we);
+            this.currentOperand.match(/\d+-\d+/g).forEach((v, i) => {
+                this.currentOperand = this.currentOperand.replace(v, _we[i])
+            })
+            this.compute()
+        } else {
+
         }
 
         

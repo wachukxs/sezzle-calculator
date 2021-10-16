@@ -3,7 +3,7 @@
 *::after {
   box-sizing: border-box;
   font-family: 'Space Mono', monospace;
-  font-weight: normal;
+  font-weight: bolder;
 }
 
 body {

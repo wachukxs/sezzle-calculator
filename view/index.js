@@ -1,10 +1,8 @@
-
 const numberButtons = document.querySelectorAll('[data-number]')
 const operationButtons = document.querySelectorAll('[data-operation]')
 const equalsButton = document.querySelector('[data-equals]')
 const deleteButton = document.querySelector('[data-delete]')
 const allClearButton = document.querySelector('[data-all-clear]')
-// const previousOperandTextElement = document.querySelector('[data-previous-operand]')
 const currentOperandTextElement = document.querySelector('[data-current-operand]')
 
 class Calculator {
@@ -145,7 +143,7 @@ class Calculator {
         } else if (new RegExp(this.additionRegEx).test(_inputString)) { 
             return this.addNumbers(_inputString.split('+'))
         } else if (new RegExp(this.subtractionRegEx).test(_inputString)) {
-            return this.subtractNumbers(_inputString.split(/(-?\d*)/))
+            return this.subtractNumbers(_inputString.split(/(-?\d*\.?\d*)/))
         } else {
             return _inputString
         }

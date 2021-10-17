@@ -14,8 +14,8 @@ class Calculator {
     }
 
     multiplicationRegEx = /(\d*\.*\d+\*\d*\.*\d+)/g
-    additionRegEx = /(\d*\.*\d+\+\d*\.*\d+)/g // /([-|\+]?\d*\.*\d+\+\d*\.*\d+)/g // todo: support prepending -
-    subtractionRegEx = /(\d*\.*\d+-\d*\.*\d+)/g // /([-|\+]?\d*\.*\d+-\d*\.*\d+)/g // todo: support prepending +
+    additionRegEx = /[-|\+]?(\d*\.*\d+\+\d*\.*\d+)/g
+    subtractionRegEx = /[-|\+]?(\d*\.*\d+-\d*\.*\d+)/g
     divisionRegEx = /(\d*\.*\d+÷\d*\.*\d+)/g
 
     arithmeticOperations = new Set(['÷', '-', '+', '*'])
@@ -45,7 +45,7 @@ class Calculator {
         if (
             (this.arithmeticOperations.has(number) && this.arithmeticOperations.has(this.currentOperand.toString().slice(-1)))
             ||
-            (this.currentOperand == '' && this.arithmeticOperations.has(number)) // can't start with operation
+            (this.currentOperand == '' && (number == '÷' || number == '*')) // can't start with (* or ÷) operation
             ) {
             // maybe show an alert or message or something
             return
@@ -113,7 +113,11 @@ class Calculator {
     }
 
     addNumbers(_inputArr){
-        return _inputArr.map((v) => parseFloat(v)).reduce((pV, cV) => pV + cV)
+        console.log('adding', _inputArr);
+        return _inputArr.map((v) => parseFloat(v)).reduce((pV, cV) => {
+            console.log('adding', pV, cV);
+            return pV + cV
+        })
     }
 
     multiplyNumbers(_inputArr) {
@@ -121,7 +125,7 @@ class Calculator {
     }
 
     subtractNumbers(_inputArr){
-        return _inputArr.map((v) => parseFloat(v)).reduce((pV, cV) => pV - cV)
+        return _inputArr.filter((v) => v !== '').reduce((pV, cV) => parseFloat(pV) + parseFloat(cV))
     }
 
     divideNumbers(_inputArr) {
@@ -141,7 +145,7 @@ class Calculator {
         } else if (new RegExp(this.additionRegEx).test(_inputString)) { 
             return this.addNumbers(_inputString.split('+'))
         } else if (new RegExp(this.subtractionRegEx).test(_inputString)) {
-            return this.subtractNumbers(_inputString.split('-'))
+            return this.subtractNumbers(_inputString.split(/(-?\d*)/))
         } else {
             return _inputString
         }

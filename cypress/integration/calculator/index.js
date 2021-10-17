@@ -18,32 +18,32 @@ describe('Test display/clicks', () => {
     it('Open the calculator app and display a reponsive calulator', () => {
 
 
-        cy.contains('5').click()
+        cy.get('[data-number="5"]').click()
 
         cy.get('.current-operand').should('have.text', '5')
 
-        cy.contains('+').click()
+        cy.get('[data-operation="+"]').click()
 
         cy.get('.current-operand').should('have.text', '5+')
 
-        cy.contains('9').click()
-        cy.contains('8').click()
+        cy.get('[data-number="9"]').click()
+        cy.get('[data-number="8"]').click()
 
         cy.get('.current-operand').should('have.text', '5+98')
     })
 
 
     it('Test for addition', () => {
-        cy.contains('5').click()
+        cy.get('[data-number="5"]').click()
 
         cy.get('.current-operand').should('have.text', '5')
 
-        cy.contains('+').click()
+        cy.get('[data-operation="+"]').click()
 
         cy.get('.current-operand').should('have.text', '5+')
 
-        cy.contains('9').click()
-        cy.contains('8').click()
+        cy.get('[data-number="9"]').click()
+        cy.get('[data-number="8"]').click()
 
         cy.get('.current-operand').should('have.text', '5+98')
 
@@ -53,41 +53,41 @@ describe('Test display/clicks', () => {
     })
 
     it('Responsiveness - focus on a number button', () => {
-        cy.get('.calculator-grid > button:nth-child(5)')
+        cy.get('[data-number="1"]')
             .click()
             .should('have.css', 'background-color', 'rgb(239, 239, 239)')
     })
 
 
     it('Try some illegal operation', () => {
-        cy.contains('*').click() // shouldn't display
+        cy.get('[data-operation="*"]').click() // shouldn't display
 
         cy.get('.current-operand').should('have.text', '')
 
-        cy.contains('+').click()
+        cy.get('[data-operation="+"]').click()
 
         cy.get('.current-operand').should('have.text', '+')
 
-        cy.contains('9').click()
-        cy.contains('8').click()
+        cy.get('[data-number="9"]').click()
+        cy.get('[data-number="8"]').click()
 
         cy.get('.current-operand').should('have.text', '+98')
     })
 
 
     it('Test for subtraction', () => {
-        cy.contains('1').click()
-        cy.contains('5').click()
+        cy.get('[data-number="1"]').click()
+        cy.get('[data-number="5"]').click()
 
         cy.get('.current-operand').should('have.text', '15')
 
-        cy.contains('-').click()
+        cy.get('[data-operation="-"]').click()
 
         cy.get('.current-operand').should('have.text', '15-')
 
-        cy.contains('3').click()
+        cy.get('[data-number="3"]').click()
         cy.contains('.').click()
-        cy.contains('2').click()
+        cy.get('[data-number="2"]').click()
 
         cy.get('.current-operand').should('have.text', '15-3.2')
 
@@ -97,16 +97,16 @@ describe('Test display/clicks', () => {
     })
 
     it('Test for division', () => {
-        cy.contains('7').click()
-        cy.contains('8').click()
+        cy.get('[data-number="7"]').click()
+        cy.get('[data-number="8"]').click()
 
         cy.get('.current-operand').should('have.text', '78')
 
-        cy.contains('÷').click()
+        cy.get('[data-operation="÷"]').click()
 
         cy.get('.current-operand').should('have.text', '78÷')
 
-        cy.contains('3').click()
+        cy.get('[data-number="3"]').click()
 
         cy.get('.current-operand').should('have.text', '78÷3')
 
@@ -116,16 +116,16 @@ describe('Test display/clicks', () => {
     })
 
     it('Test for multiplication', () => {
-        cy.contains('1').click()
-        cy.contains('8').click()
+        cy.get('[data-number="1"]').click()
+        cy.get('[data-number="8"]').click()
 
         cy.get('.current-operand').should('have.text', '18')
 
-        cy.contains('*').click()
+        cy.get('[data-operation="*"]').click()
 
         cy.get('.current-operand').should('have.text', '18*')
 
-        cy.contains('6').click()
+        cy.get('[data-number="6"]').click()
 
         cy.get('.current-operand').should('have.text', '18*6')
 

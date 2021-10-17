@@ -37,12 +37,17 @@ class Calculator {
          * WHY?
          * 
          * 
-         * [-|\+]*\d+\*\d+
+         * [-|\+]?\d+\*\d+
          * 
          * we should also allow for -3 * -3 : TODO later
          */
         this.clear()
     }
+
+    multiplicationRegEx = /(\d*\.*\d+\*\d*\.*\d+)/g
+    additionRegEx = /(\d*\.*\d+\+\d*\.*\d+)/g // /([-|\+]?\d*\.*\d+\+\d*\.*\d+)/g // todo: support prepending -
+    subtractionRegEx = /(\d*\.*\d+-\d*\.*\d+)/g // /([-|\+]?\d*\.*\d+-\d*\.*\d+)/g // todo: support prepending +
+    divisionRegEx = /(\d*\.*\d+÷\d*\.*\d+)/g
 
     /**
      * delete all the displayed values. set this.currentOperand to an empty string if/since the values on the output are removed.
@@ -72,7 +77,7 @@ class Calculator {
         if (
             (arithmeticOperations.has(number) && arithmeticOperations.has(this.currentOperand.toString().slice(-1)))
             ||
-            (this.currentOperand == '' && (number == '÷' || number == '*')) // can't start with * or ÷
+            (this.currentOperand == '' && arithmeticOperations.has(number)) // can't start with operation
             ) {
             console.log('nope'); // show an alert or message or something
             return
@@ -102,117 +107,54 @@ class Calculator {
      * takes the values inside your calculator and displays the result
      * 
      * this will contain our logic of how to solve the operand with BODMAS
-     * @returns 
+     * @returns final value
      */
     compute() {
-        // let computation
-        // const prev = parseFloat(this.previousOperand)
-        // const current = parseFloat(this.currentOperand)
-        // if (isNaN(prev) || isNaN(current)) return
-        // switch (this.operation) {
-        //     case '+':
-        //         computation = prev + current
-        //         break
-        //     case '-':
-        //         computation = prev - current
-        //         break
-        //     case '*':
-        //         computation = prev * current
-        //         break
-        //     case '÷':
-        //         computation = prev / current
-        //         break
-        //     default:
-        //         return
-        // }
-        // this.currentOperand = computation
-        // this.operation = undefined
-        // this.previousOperand = ''
-
-        // ---
-
-        // or use regex to replace appropriately
+        
+        // use regex to replace appropriately
 
         // split according to BODMAS
-        // split subtraction first.
-        // let _computation;
-
-        // if (this.currentOperand) {
-        //     console.log(`tryna solve ${this.currentOperand}`);
-        //     if (Array.isArray(this.currentOperand.toString().split('÷'))) {
-        //         this.currentOperand = this.divideNumbers(this.currentOperand.toString().split('÷').map((v) => this.someRecursiveMethod(v)))
-        //     } else if (Array.isArray(this.currentOperand.toString().split('*'))) {
-        //         this.currentOperand = this.multiplyNumbers(this.currentOperand.toString().split('*').map((v) => this.someRecursiveMethod(v)))
-        //     } else if (Array.isArray(this.currentOperand.toString().split('+'))) {
-        //         this.currentOperand = this.addNumbers(this.currentOperand.toString().split('+').map((v) => this.someRecursiveMethod(v)))
-        //     } else if (Array.isArray(this.currentOperand.toString().split('-'))) {
-        //         this.currentOperand = this.subtractNumbers(this.currentOperand.toString().split('-').map((v) => this.someRecursiveMethod(v)))
-        //     }
-        // } else {
-            
-        // }
-
-        // let _computation;
-        // _computation = this.currentOperand.match(/\d+÷\d+/g)
-        if (this.currentOperand.match(/\d+÷\d+/g)) {
-            let _we = this.currentOperand.match(/\d+÷\d+/g).map((v) => this.someRecursiveMethod(v))
+        
+        if (this.currentOperand.match(this.divisionRegEx)) {
+            let _we = this.currentOperand.match(this.divisionRegEx).map((v) => this.someRecursiveMethod(v))
             console.log('_we for ÷', _we);
-            this.currentOperand.match(/\d+÷\d+/g).forEach((v, i) => {
+            this.currentOperand.match(this.divisionRegEx).forEach((v, i) => {
                 this.currentOperand = this.currentOperand.replace(v, _we[i])
             })
             this.compute()
-        } else if (this.currentOperand.match(/\d+\*\d+/g)) {
-            console.log(this.currentOperand,'******', this.currentOperand.match(/\d+\*\d+/g));
-            let _we = this.currentOperand.match(/\d+\*\d+/g).map((v) => this.someRecursiveMethod(v))
+        } else if (this.currentOperand.match(this.multiplicationRegEx)) {
+            console.log(this.currentOperand,'******', this.currentOperand.match(this.multiplicationRegEx));
+            let _we = this.currentOperand.match(this.multiplicationRegEx).map((v) => this.someRecursiveMethod(v))
             console.log('_we for *', _we);
-            this.currentOperand.match(/\d+\*\d+/g).forEach((v, i) => {
+            this.currentOperand.match(this.multiplicationRegEx).forEach((v, i) => {
                 this.currentOperand = this.currentOperand.replace(v, _we[i])
             })
 
-            console.log('after ***', this.currentOperand);
             this.compute()
-        } else if (this.currentOperand.match(/\d+\+\d+/g)) {
+        } else if (this.currentOperand.match(this.additionRegEx)) {
             console.log('');
-            let _we = this.currentOperand.match(/\d+\+\d+/g).map((v) => this.someRecursiveMethod(v))
-            console.log('_we for +', _we);
-            this.currentOperand.match(/\d+\+\d+/g).forEach((v, i) => {
+            let _we = this.currentOperand.match(this.additionRegEx).map((v) => this.someRecursiveMethod(v))
+
+            this.currentOperand.match(this.additionRegEx).forEach((v, i) => {
                 this.currentOperand = this.currentOperand.replace(v, _we[i])
             })
             this.compute()
-        } else if (this.currentOperand.match(/\d+-\d+/g)) {
-            let _we = this.currentOperand.match(/\d+-\d+/g).map((v) => this.someRecursiveMethod(v))
-            console.log('_we for -', _we);
-            this.currentOperand.match(/\d+-\d+/g).forEach((v, i) => {
+        } else if (this.currentOperand.match(this.subtractionRegEx)) {
+            let _we = this.currentOperand.match(this.subtractionRegEx).map((v) => this.someRecursiveMethod(v))
+
+            this.currentOperand.match(this.subtractionRegEx).forEach((v, i) => {
                 this.currentOperand = this.currentOperand.replace(v, _we[i])
             })
             this.compute()
         } else {
 
         }
-
         
-
-        
-        // this.operation = undefined // need this ?
+        // this.operation = undefined
         // this.previousOperand = ''
     }
 
-    getDisplayNumber(number) {
-        // const stringNumber = number.toString()
-        // const integerDigits = parseFloat(stringNumber.split('.')[0])
-        // const decimalDigits = stringNumber.split('.')[1]
-        // let integerDisplay
-        // if (isNaN(integerDigits)) {
-        //     integerDisplay = ''
-        // } else {
-        //     integerDisplay = integerDigits.toLocaleString('en', { maximumFractionDigits: 0 })
-        // }
-        // if (decimalDigits != null) {
-        //     return `${integerDisplay}.${decimalDigits}`
-        // } else {
-        //     return integerDisplay
-        // }
-
+    getDisplayNumber(number) { // :)
         return number
     }
 
@@ -233,19 +175,19 @@ class Calculator {
     }
 
     addNumbers(_inputArr){
-        return _inputArr.map((v) => parseInt(v)).reduce((pV, cV) => pV + cV)
+        return _inputArr.map((v) => parseFloat(v)).reduce((pV, cV) => pV + cV)
     }
 
     multiplyNumbers(_inputArr) {
-        return _inputArr.map((v) => parseInt(v)).reduce((pV, cV) => pV * cV)
+        return _inputArr.map((v) => parseFloat(v)).reduce((pV, cV) => pV * cV)
     }
 
     subtractNumbers(_inputArr){
-        return _inputArr.map((v) => parseInt(v)).reduce((pV, cV) => pV - cV)
+        return _inputArr.map((v) => parseFloat(v)).reduce((pV, cV) => pV - cV)
     }
 
     divideNumbers(_inputArr) {
-        return _inputArr.map((v) => parseInt(v)).reduce((pV, cV) => pV / cV)
+        return _inputArr.map((v) => parseFloat(v)).reduce((pV, cV) => pV / cV)
     }
 
     /**
@@ -254,15 +196,13 @@ class Calculator {
      * @param {string} _inputString a sting that's either all number or includes an operation
      */
     someRecursiveMethod(_inputString) {
-        // no need for the 2nd check
-        // isNaN(_inputString) && new RegExp(/\d+[-|+|*|÷]{1}\d+/g).test(_inputString)
-        if (new RegExp(/^\d+÷\d+$/g).test(_inputString)) { 
+        if (new RegExp(this.divisionRegEx).test(_inputString)) { 
             return this.divideNumbers(_inputString.split('÷'))
-        } else if (new RegExp(/^\d+\*\d+$/g).test(_inputString)) {
+        } else if (new RegExp(this.multiplicationRegEx).test(_inputString)) {
             return this.multiplyNumbers(_inputString.split('*'))
-        } else if (new RegExp(/^\d+\+\d+$/g).test(_inputString)) { 
+        } else if (new RegExp(this.additionRegEx).test(_inputString)) { 
             return this.addNumbers(_inputString.split('+'))
-        } else if (new RegExp(/^\d+-\d+$/g).test(_inputString)) {
+        } else if (new RegExp(this.subtractionRegEx).test(_inputString)) {
             return this.subtractNumbers(_inputString.split('-'))
         } else {
             return _inputString

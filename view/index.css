@@ -33,6 +33,10 @@ body {
   background-color: #a9a9a9;
 }
 
+.calculator-grid > button:focus {
+  background-color: #dd1313;
+}
+
 .span-two {
   grid-column: span 2;
   color: #adf802;

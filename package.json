@@ -1,0 +1,26 @@
+{
+  "name": "sezzle-take-home",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/cypress open",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wachukxs/sezzle-calculator.git"
+  },
+  "author": "@wachukxs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wachukxs/sezzle-calculator/issues"
+  },
+  "homepage": "https://github.com/wachukxs/sezzle-calculator#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "cypress": "^8.6.0"
+  }
+}

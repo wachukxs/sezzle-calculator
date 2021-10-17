@@ -75,7 +75,7 @@ describe('Test display/clicks', () => {
     })
 
 
-    it('Test for subtraction', () => {
+    it('Test for subtraction with decimal', () => {
         cy.get('[data-number="1"]').click()
         cy.get('[data-number="5"]').click()
 
@@ -132,5 +132,52 @@ describe('Test display/clicks', () => {
         cy.contains('=').click()
 
         cy.get('.current-operand').should('have.text', '108')
+    })
+
+
+    it('Test for division with decimal', () => {
+        cy.get('[data-number="9"]').click()
+        cy.get('[data-number="."]').click()
+        cy.get('[data-number="2"]').click()
+
+        cy.get('.current-operand').should('have.text', '9.2')
+
+        cy.get('[data-operation="÷"]').click()
+
+        cy.get('.current-operand').should('have.text', '9.2÷')
+
+        cy.get('[data-number="7"]').click()
+
+        cy.get('.current-operand').should('have.text', '9.2÷7')
+
+        cy.contains('=').click()
+
+        cy.get('.current-operand').should('have.text', '1.3142857142857143')
+    })
+
+
+    it('Test for all clear', () => {
+        cy.get('[data-number="9"]').click()
+        cy.get('[data-number="4"]').click()
+        cy.get('[data-number="2"]').click()
+
+        cy.get('.current-operand').should('have.text', '942')
+
+        cy.get('[data-all-clear]').click()
+
+        cy.get('.current-operand').should('have.text', '')
+    })
+
+
+    it('Test for delete', () => {
+        cy.get('[data-number="2"]').click()
+        cy.get('[data-number="8"]').click()
+        cy.get('[data-number="1"]').click()
+
+        cy.get('.current-operand').should('have.text', '281')
+
+        cy.get('[data-delete]').click()
+
+        cy.get('.current-operand').should('have.text', '28')
     })
 })

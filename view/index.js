@@ -41,17 +41,15 @@ class Calculator {
      * @returns void - it appends to the currentOperand
      */
     appendNumber(number) {
-        console.log(`number/operation to append ${number}`, `the current operand ${this.currentOperand}`);
         // can't append an operation if the last click was also an operation.
         if (
             (this.arithmeticOperations.has(number) && this.arithmeticOperations.has(this.currentOperand.toString().slice(-1)))
             ||
             (this.currentOperand == '' && this.arithmeticOperations.has(number)) // can't start with operation
             ) {
-            console.log('nope'); // show an alert or message or something
+            // maybe show an alert or message or something
             return
         }
-        console.log(`appending ${number.toString()} to ${this.currentOperand.toString()}`);
         this.currentOperand = this.currentOperand.toString() + number.toString()
     }
 
@@ -154,7 +152,6 @@ const calculator = new Calculator(currentOperandTextElement)
 
 numberButtons.forEach(button => {
     button.addEventListener('click', () => {
-        console.log(`clicked the ${button.innerText} number button`);
         calculator.appendNumber(button.innerText)
         calculator.updateDisplay()
     })
@@ -162,26 +159,22 @@ numberButtons.forEach(button => {
 
 operationButtons.forEach(button => {
     button.addEventListener('click', () => {
-        console.log(`clicked the ${button.innerText} operation button`);
         calculator.appendNumber(button.innerText)
         calculator.updateDisplay()
     })
 })
 
 equalsButton.addEventListener('click', button => {
-    console.log('clicked equal button');
     calculator.compute()
     calculator.updateDisplay()
 })
 
 allClearButton.addEventListener('click', button => {
-    console.log('clicked AC button');
     calculator.clear()
     calculator.updateDisplay()
 })
 
 deleteButton.addEventListener('click', button => {
-    console.log('clicked delete button');
     calculator.delete()
     calculator.updateDisplay()
 })
